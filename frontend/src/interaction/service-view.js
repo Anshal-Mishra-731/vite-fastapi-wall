@@ -41,7 +41,7 @@ export class viewService{
     }
     async getAllPostsSelf(page = 1, limit = 10){
         try {
-            const response = await axios.get('/api/v1/social-media/posts', 
+            const response = await axios.get('/api/v1/social-media/posts    ', 
                 {
                 params: 
                 {

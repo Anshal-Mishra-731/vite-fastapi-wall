@@ -23,19 +23,19 @@ export class Auth{
         }
     }
     
-async login(data){
-    try {
-        const response = await axios.post('/api/v1/users/login', {
-            username: data.username,
-            password: data.password
-        }, { withCredentials: true });
+    async login(data){
+        try {
+            const response = await axios.post('/api/v1/users/login', {
+                username: data.username,
+                password: data.password
+            }, { withCredentials: true });
 
-        return response;
-    } catch (error) {
-        console.error("Error logging in:", error);
-        throw error;
+            return response;
+        } catch (error) {
+            console.error("Error logging in:", error);
+            throw error;
+        }
     }
-}
     async getCurrentUser(){
         try {
             const response = await axios.get('/api/v1/users/current-user',
