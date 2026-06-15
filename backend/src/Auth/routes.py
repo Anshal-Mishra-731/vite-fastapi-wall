@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel.ext.asyncio.session import AsyncSession
-
 from src.db.database import get_session
 
 from src.Auth.schemas import (UserCreateModel, UserReadModel, UserLoginModel)
@@ -56,4 +55,6 @@ async def current_user(user=Depends(get_current_user)):
 
 async def logout_user(token_data: dict = Depends(AccessTokenBearer())):
     await add_jti_to_blocklist(token_data["jti"])
-    return JSONResponse(content={"message": "Logout successful"}, status_code=status.HTTP_200_OK)
+    return {
+    "message": "Logout successful"
+    }

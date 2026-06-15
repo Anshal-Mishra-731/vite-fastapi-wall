@@ -1,8 +1,8 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.Auth.utils import decode_token
+from src.Auth.utilis import decode_token
 from src.db.database import get_session
 from src.db.models import User
 from src.Auth.services import auth_service
@@ -10,7 +10,7 @@ from src.Auth.blocklist import is_jti_blocked
 
 
 class AccessTokenBearer(HTTPBearer):
-    async def __call__(self, request):
+    async def __call__(self, request: Request):
         credentials = await super().__call__(request)
         token = credentials.credentials
         token_data = decode_token(token)

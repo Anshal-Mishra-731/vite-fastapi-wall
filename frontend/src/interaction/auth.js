@@ -1,64 +1,88 @@
-import axios from "axios";  
+import axios from "axios";
 
-export class Auth{
+export class Auth {
     async createAccount(data) {
         try {
             const response = await axios.post(
-                "/api/v1/users/register",
+                "/api/v1/auth/signup",
                 {
-                    ...data,
-                    role: "USER"
-                },
-                { withCredentials: true }
+                    ...data
+                }
             );
+
             if (response.status === 201) {
-                return this.login(data.username, data.password);
-            } else {
-                throw new Error("Account creation failed");
+                return this.login({
+                    username: data.username,
+                    password: data.password
+                });
             }
+
+            throw new Error("Account creation failed");
 
         } catch (error) {
             console.error("Error creating account:", error.response?.data || error);
             throw error;
         }
     }
-    
-    async login(data){
-        try {
-            const response = await axios.post('/api/v1/users/login', {
-                username: data.username,
-                password: data.password
-            }, { withCredentials: true });
 
+    async login(data) {
+        try {
+            const response = await axios.post(
+                "/api/v1/auth/login",
+                {
+                    username: data.username,
+                    password: data.password
+                }
+            );
+            localStorage.setItem("access_token", response.data.access_token);
             return response;
+
         } catch (error) {
             console.error("Error logging in:", error);
             throw error;
         }
     }
-    async getCurrentUser(){
+
+    async getCurrentUser() {
         try {
-            const response = await axios.get('/api/v1/users/current-user',
-                { withCredentials: true }
+            const token = localStorage.getItem("access_token");
+            const response = await axios.get(
+                "/api/v1/auth/current-user",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
             return response;
+
         } catch (error) {
             console.error("Error getting current user:", error);
             throw error;
         }
     }
-    async logout(){
+
+    async logout() {
         try {
-            const response = await axios.post('/api/v1/users/logout',
+            const token = localStorage.getItem("access_token");
+            const response = await axios.post(
+                "/api/v1/auth/logout",
                 {},
-                { withCredentials: true }
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
+            localStorage.removeItem("access_token");
             return response;
+
         } catch (error) {
             console.error("Error logging out:", error);
             throw error;
         }
     }
 }
+
 const serviceAuth = new Auth();
 export default serviceAuth;

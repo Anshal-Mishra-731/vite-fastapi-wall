@@ -3,7 +3,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.db.models import User
 from src.Auth.schemas import UserCreateModel, UserLoginModel
-from src.Auth.utils import (gen_hash_password, verify_password, create_access_token)
+from src.Auth.utilis import (gen_hash_password, verify_password, create_access_token)
 
 
 class AuthService:

@@ -10,5 +10,5 @@ class UserReadModel(BaseModel):
     email: str
 
 class UserLoginModel(BaseModel):
-    email: EmailStr
+    username: str   
     password: str
