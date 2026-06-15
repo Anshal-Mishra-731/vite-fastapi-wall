@@ -58,7 +58,10 @@ class AuthService:
         )
         return {
             "access_token": token,
-            "user": user
+            "user": {
+                "uid": str(user.uid),
+                "username": user.username
+            }
         }
 
 auth_service = AuthService()

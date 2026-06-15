@@ -22,18 +22,15 @@ function Login() {
     const loginUser = async (data) => {
         try {
             const response = await serviceAuth.login(data);
-
-            if (response) {
-                const UserData = await serviceAuth.getCurrentUser();
-                const accessToken = response.data.data.accessToken;
+            const accessToken = response.data.access_token;
+            const user = response.data.user;
+            if (accessToken) {
                 localStorage.setItem("accessToken", accessToken);
-
-                if (UserData) {
-                    dispatch(login(UserData.data));
-                }
-
-                navigate("/");
             }
+            if (user) {
+                dispatch(login(user));
+            }
+            navigate("/");
         } catch (error) {
             console.error("Login failed:", error);
         }
